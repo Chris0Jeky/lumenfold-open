@@ -1,0 +1,38 @@
+--- a/Lib/asyncio/proactor_events.py
++++ b/Lib/asyncio/proactor_events.py
+@@ -839,6 +839,7 @@
+                        sslcontext=None, server=None, backlog=100,
+                        ssl_handshake_timeout=None,
+                        ssl_shutdown_timeout=None):
++        state = {"delay": 0.25, "fails": 0}
+ 
+         def loop(f=None):
+             try:
+@@ -858,17 +859,21 @@
+                         self._make_socket_transport(
+                             conn, protocol,
+                             extra={'peername': addr}, server=server)
++                    state["delay"], state["fails"] = 0.25, 0
+                 if self.is_closed():
+                     return
+                 f = self._proactor.accept(sock)
+             except OSError as exc:
+                 if sock.fileno() != -1:
+-                    self.call_exception_handler({
+-                        'message': 'Accept failed on a socket',
+-                        'exception': exc,
+-                        'socket': trsock.TransportSocket(sock),
+-                    })
+-                    sock.close()
++                    # A transient error (for example WSAENOBUFS) must not end
++                    # the server: keep the socket open and retry with backoff.
++                    state["fails"] += 1
++                    logger.warning(
++                        "[lf_accept_guard] accept failed (%s); retry %d in "
++                        "%.2f s, listener kept open",
++                        exc, state["fails"], state["delay"])
++                    self.call_later(state["delay"], loop)
++                    state["delay"] = min(state["delay"] * 2, 10.0)
+                 elif self._debug:
+                     logger.debug("Accept failed on socket %r",
+                                  sock, exc_info=True)

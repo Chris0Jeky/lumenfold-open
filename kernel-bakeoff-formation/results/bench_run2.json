@@ -1,0 +1,478 @@
+{
+ "started": "2026-11-18 07:05:50",
+ "rounds": 9,
+ "runs": {
+  "original": {
+   "formation.slots.dragon.n100000": [
+    {
+     "median_ns": 28495600.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27762600.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27450000.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27470200.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27442000.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27523700.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27468800.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27557000.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 27448200.0,
+     "checksum": "00000000000186a0"
+    }
+   ],
+   "formation.assign.n100000": [
+    {
+     "median_ns": 48493600.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48878900.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48495100.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48331600.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48450300.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48428500.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48520200.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48543500.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 48529200.0,
+     "checksum": "00000000001af566"
+    }
+   ]
+  },
+  "N": {
+   "formation.slots.dragon.n100000": [
+    {
+     "median_ns": 350850.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 350512.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 352275.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 351537.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 351512.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 352962.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 351025.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 351487.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 351862.5,
+     "checksum": "00000000000186a0"
+    }
+   ],
+   "formation.assign.n100000": [
+    {
+     "median_ns": 5401500.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5326700.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5386400.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5195000.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5247200.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5254000.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5354000.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5262900.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 5332400.0,
+     "checksum": "00000000001af566"
+    }
+   ]
+  },
+  "V": {
+   "formation.slots.dragon.n100000": [
+    {
+     "median_ns": 66456.2,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66275.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66490.6,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66584.4,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66440.6,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66775.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66896.9,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66340.6,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 66378.1,
+     "checksum": "00000000000186a0"
+    }
+   ],
+   "formation.assign.n100000": [
+    {
+     "median_ns": 2874700.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2953100.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2969500.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2813500.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2972800.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2884900.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2856600.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2805700.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 2905800.0,
+     "checksum": "00000000001af566"
+    }
+   ]
+  },
+  "L": {
+   "formation.slots.dragon.n100000": [
+    {
+     "median_ns": 306037.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 305650.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 306212.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 306700.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 305837.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 305812.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 305425.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 305087.5,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 305637.5,
+     "checksum": "00000000000186a0"
+    }
+   ],
+   "formation.assign.n100000": [
+    {
+     "median_ns": 7036700.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 7176900.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 6989300.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 6918000.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 7092400.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 6840800.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 6945000.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 7051200.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 7047600.0,
+     "checksum": "00000000001af566"
+    }
+   ]
+  },
+  "A": {
+   "formation.slots.dragon.n100000": [
+    {
+     "median_ns": 578625.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 582075.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 586050.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 579650.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 585450.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 585200.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 580975.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 581075.0,
+     "checksum": "00000000000186a0"
+    },
+    {
+     "median_ns": 580650.0,
+     "checksum": "00000000000186a0"
+    }
+   ],
+   "formation.assign.n100000": [
+    {
+     "median_ns": 8973300.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8890200.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8831600.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8832900.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8951500.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8951100.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8940300.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8798000.0,
+     "checksum": "00000000001af566"
+    },
+    {
+     "median_ns": 8815300.0,
+     "checksum": "00000000001af566"
+    }
+   ]
+  }
+ },
+ "table": {
+  "original": {
+   "formation.slots.dragon.n100000": {
+    "median_ms": 27.4702,
+    "speedup": 1.0,
+    "checksums": [
+     "00000000000186a0"
+    ]
+   },
+   "formation.assign.n100000": {
+    "median_ms": 48.4951,
+    "speedup": 1.0,
+    "checksums": [
+     "00000000001af566"
+    ]
+   }
+  },
+  "N": {
+   "formation.slots.dragon.n100000": {
+    "median_ms": 0.3515,
+    "speedup": 78.15,
+    "checksums": [
+     "00000000000186a0"
+    ]
+   },
+   "formation.assign.n100000": {
+    "median_ms": 5.3267,
+    "speedup": 9.1,
+    "checksums": [
+     "00000000001af566"
+    ]
+   }
+  },
+  "V": {
+   "formation.slots.dragon.n100000": {
+    "median_ms": 0.0665,
+    "speedup": 413.36,
+    "checksums": [
+     "00000000000186a0"
+    ]
+   },
+   "formation.assign.n100000": {
+    "median_ms": 2.8849,
+    "speedup": 16.81,
+    "checksums": [
+     "00000000001af566"
+    ]
+   }
+  },
+  "L": {
+   "formation.slots.dragon.n100000": {
+    "median_ms": 0.3058,
+    "speedup": 89.83,
+    "checksums": [
+     "00000000000186a0"
+    ]
+   },
+   "formation.assign.n100000": {
+    "median_ms": 7.0367,
+    "speedup": 6.89,
+    "checksums": [
+     "00000000001af566"
+    ]
+   }
+  },
+  "A": {
+   "formation.slots.dragon.n100000": {
+    "median_ms": 0.5811,
+    "speedup": 47.27,
+    "checksums": [
+     "00000000000186a0"
+    ]
+   },
+   "formation.assign.n100000": {
+    "median_ms": 8.8902,
+    "speedup": 5.45,
+    "checksums": [
+     "00000000001af566"
+    ]
+   }
+  }
+ }
+}
