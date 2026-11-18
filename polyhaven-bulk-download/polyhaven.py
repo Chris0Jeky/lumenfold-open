@@ -1,5 +1,5 @@
 """Fetch Poly Haven assets through its public API (api.polyhaven.com), each file checked against the API's md5.
-  python3 polyhaven.py --out ./polyhaven --res 4k \
+  python polyhaven.py --out ./polyhaven --res 4k \
       --models nature,tools,containers,furniture --collections pine_forest,verdant_trail,the_shed,smugglers_cove,hidden_alley \
       --hdris night,overcast --textures brick,cobblestone,bark,roofing,plaster-concrete,rock [--dry]
 Models: the FBX at --res with its textures. Textures: every map at --res as jpg (png where there is no jpg). HDRIs: .hdr.

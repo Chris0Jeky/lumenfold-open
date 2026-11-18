@@ -1,3 +1,7 @@
+# This file reimplements, vectorised, the behaviour of _compute_vertex_face_normals from ComfyUI v0.43.2,
+# comfy_extras/nodes_mesh_postprocess.py, and was written against that function to be bit-identical to it.
+# ComfyUI is licensed under the GNU General Public License version 3; so is this file. The licence text is in
+# LICENSE-GPL-3.0.txt beside this file. Upstream copyright: the ComfyUI authors (github.com/comfyanonymous/ComfyUI).
 """Vectorised MeshSmoothNormals crease path. Bit-identical to ComfyUI's
 `_compute_vertex_face_normals` (comfy_extras/nodes_mesh_postprocess.py, ~line 1037), which spends ~5 s per job in
 per-face Python loops. The None / >=180 branch, an empty mesh, vertices other than float32/float64 and negative indices

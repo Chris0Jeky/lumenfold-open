@@ -2,7 +2,7 @@
 # pin selection and row coefficients, reused in _sparse) and comfy_extras/mesh3d/uv_unwrap/segment.py (cluster_charts_pec
 # -> cluster_charts_pec_fast, _merge_small_charts -> merge_small_charts_fast).
 # ComfyUI is licensed under the GNU General Public License version 3; so is this file. The licence text is in
-# LICENSE-GPL-3.0.txt beside this file. Changes: see the docstrings of the functions named above.
+# LICENSE-GPL-3.0.txt beside this file. Upstream copyright: the ComfyUI authors (github.com/comfyanonymous/ComfyUI). Changes: see the docstrings of the functions named above.
 """Faster UnwrapMesh for ComfyUI 0.43.2, as a drop-in patch: the batched LSCM solved sparse instead of dense.
 
 ComfyUI's UV unwrap (`comfy_extras/mesh3d/uv_unwrap`) spends most of a TRELLIS mesh job on the CPU while the GPU

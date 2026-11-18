@@ -39,7 +39,7 @@ In one measured `DecimateMesh` call of 44.9 s, the fallback took 31.7 s over 26 
 ## Result
 
 Measured 7 November 2026. Exactness is against the torch fallback with its degree cap raised to 64; speed is against the
-fallback at its production cap of 16.
+fallback at its default cap of 16.
 
 | Check | Result |
 | --- | --- |
@@ -101,7 +101,7 @@ comfy-kitchen 0.2.40. Full stack: [../docs/windows-rocm-stack.md](../docs/window
 - `edges_lowpeak.py` on the GPU, and its memory saving.
 - ComfyUI versions after v0.43.2: `qem_hip.py` patches `_kitchen_op` without a source pin (its self-test still guards
   the result); `edges_lowpeak.py` refuses to install when upstream's source changes.
-- Production job timings with the node installed.
+- Full-size job timings with the node installed.
 
 ## Upstream and licence
 

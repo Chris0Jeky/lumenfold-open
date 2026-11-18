@@ -1,7 +1,7 @@
 """lf_spill_guard: stop a ComfyUI prompt the moment WDDM starts backing its GPU memory with host memory (7 Nov 2026).
 Adds no nodes.
 
-A production image-to-3D prompt (7 Nov) showed the spill path. WDDM gave the ComfyUI process a dGPU budget of about
+A real image-to-3D prompt (7 Nov) showed the spill path. WDDM gave the ComfyUI process a dGPU budget of about
 11.5 GB, under lf_vram_cap's 15.92 GiB cap. Past it, the process's **shared** GPU memory (host RAM) rose 0.1 -> 6.3 GB
 in 20 s; then host available memory collapsed 5.2 -> 0.1 GB in 4 s. The cap never fired before the host was gone.
 Shared usage rising is the earliest signal, and it is per process: Windows' "GPU Process Memory(pid_<pid>_luid_..)"

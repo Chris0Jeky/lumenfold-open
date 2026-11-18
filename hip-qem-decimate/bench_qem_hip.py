@@ -5,7 +5,7 @@
 
 1. self_test (closed torus grid, degree cap raised so the fallback is exact).
 2. One collapse-check call on every edge of the mesh with random targets: mismatches against the fallback at cap 64, and
-   time against the fallback at the production cap (16).
+   time against the fallback at the default cap (16).
 3. qem_simplify to --target faces, fallback vs kernel: time, faces, Chamfer between the two results.
 Prints `QEMHIP {json}` lines.
 """
@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.argv[1:], args = [], sys.argv[1:]  # comfy.cli_args parses sys.argv at import
 sys.path.insert(0, os.environ["COMFYUI_ROOT"])
-sys.path.insert(0, str(Path(__file__).resolve().parent / "comfy_nodes" / "lf_qem_hip"))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lf_qem_hip"))
 import numpy as np
 import torch
 import comfy_extras.mesh3d.postprocess.qem_decimate as q

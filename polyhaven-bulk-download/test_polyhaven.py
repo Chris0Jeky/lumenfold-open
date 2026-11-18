@@ -1,6 +1,6 @@
 """Offline check of polyhaven.py: md5-checked download, resume and mismatch handling (through file:// URLs), and the
 file list per asset kind with the resolution fallback (with the API call replaced by a fixed answer).
-    python3 -m unittest test_polyhaven -v"""
+    python -m unittest test_polyhaven -v"""
 import hashlib, os, tempfile, unittest
 from pathlib import Path
 

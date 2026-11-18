@@ -1,7 +1,7 @@
 # This file contains modified copies of functions from ComfyUI v0.43.2,
 # comfy_extras/mesh3d/uv_unwrap/segment.py (cluster_charts_pec -> cluster_charts, _combine_normal_cones -> cone_half).
 # ComfyUI is licensed under the GNU General Public License version 3; so is this file. The licence text is in
-# LICENSE-GPL-3.0.txt beside this file. Changes: see the docstrings of the functions named above.
+# LICENSE-GPL-3.0.txt beside this file. Upstream copyright: the ComfyUI authors (github.com/comfyanonymous/ComfyUI). Changes: see the docstrings of the functions named above.
 """Low-overhead PEC clustering, chart boundary loops, normal-cone and edge-remap helpers, with checked installation.
 
 Large-chart batching and the copied unwrap driver were dropped: batching saved nothing measurable, and the

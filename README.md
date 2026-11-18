@@ -22,7 +22,7 @@ Most of it comes from running ComfyUI, torch and Unreal Engine 5.8 on one Window
 | Folder | What it does | Result |
 |---|---|---|
 | [kernel-bakeoff-formation](kernel-bakeoff-formation/) | One C++ task, four model-written solutions, bit-exact checks and the bench to rerun them | 75.97 ms to 2.95 ms (25.7x) at 100,000 agents on one thread, 0 mismatches on 1,518 hidden cases |
-| [ue58-pitfalls](ue58-pitfalls/) | Unreal Engine 5.8 calls and importers that fail without an error, each with symptom and fix | List |
+| [ue58-pitfalls](ue58-pitfalls/) | Unreal Engine 5.8 calls and importers that fail without an error, each with symptom and fix | 20 pitfalls with symptom and fix, and one check script |
 
 ## Assets
 

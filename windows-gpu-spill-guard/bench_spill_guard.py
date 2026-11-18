@@ -4,7 +4,7 @@ trips on the process's shared GPU memory and turns the next allocation into a HI
   python -s bench_spill_guard.py [--step-mb 256] [--pause-s 0.05] [--threshold-gb 1.0] [--host-floor-gb 6] [--hog-gb 0]
 
 Needs torch (ROCm build) and psutil. The guard is polled every 1 s here (ComfyUI's node polls every 0.25 s).
-The 7 Nov production spill ran at about 0.3 GB/s; `--step-mb 128 --pause-s 0.4` fills at that rate, so a 1 s reading
+The 7 Nov real spill ran at about 0.3 GB/s; `--step-mb 128 --pause-s 0.4` fills at that rate, so a 1 s reading
 can land between the budget and the cap (at the default 2.7 GB/s the cap OOM comes first).
 `--hog-gb N` first starts a helper process that holds N GB of VRAM, as other GPU users did during that spill
 (WDDM gave the ComfyUI process 11.5 GB then; on a clean box the process reaches 15.88 GiB with 0.38 GB shared, so
@@ -36,7 +36,7 @@ def main():
     a = ap.parse_args()
     dev = 0
     hog = None
-    if a.hog_gb > 0:  # a second GPU process holding N GB: the budget shortfall the production spill had
+    if a.hog_gb > 0:  # a second GPU process holding N GB: the budget shortfall the real spill had
         code = ("import sys, time, torch; x = torch.ones(int(%r * 2**30) // 2, dtype=torch.float16, device='cuda'); "
                 "torch.cuda.synchronize(); print('HOG ready', flush=True); time.sleep(420)" % a.hog_gb)
         hog = subprocess.Popen([sys.executable, "-s", "-c", code], stdout=subprocess.PIPE, text=True)

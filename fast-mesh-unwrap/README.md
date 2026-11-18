@@ -104,7 +104,7 @@ RX 9070 XT, Adrenalin 32.0.31041.1004) was hidden. Full stack:
 ## Not verified
 
 - GPU tensors and a full ComfyUI job: these CPU timings do not predict a GPU job's wall time.
-- Production job timings with the node installed.
+- Full-size job timings with the node installed.
 - Other meshes at full scale: the 472,523-face numbers are from one mesh.
 - ComfyUI versions after v0.43.2. There is no source-hash pin; protection is the `lscm_charts_batch` signature check
   and the install self-tests.
@@ -115,7 +115,7 @@ RX 9070 XT, Adrenalin 32.0.31041.1004) was hidden. Full stack:
 
 - ComfyUI v0.43.2 (GPL-3.0): `comfy_extras/mesh3d/uv_unwrap/{mesh,segment,parameterize,pack}.py` and
   `comfy_extras/nodes_mesh_postprocess.py`.
-- `lf_unwrap_fast/unwrap_fast.py` and `lf_unwrap_fast/batch_fast.py` contain modified copies of, or code adapted from,
-  ComfyUI v0.43.2 functions (named at the top of each file), so those two files are GPL-3.0
+- `lf_unwrap_fast/unwrap_fast.py`, `batch_fast.py` and `normals_fast.py` contain modified copies of, code adapted from, or a reimplementation written against,
+  ComfyUI v0.43.2 functions (named at the top of each file), so those three files are GPL-3.0
   (`lf_unwrap_fast/LICENSE-GPL-3.0.txt`). The other files here are MIT.
 - numba 0.68.1 (BSD), numpy 2.5.2, scipy 1.18.1, trimesh 5.1.0.

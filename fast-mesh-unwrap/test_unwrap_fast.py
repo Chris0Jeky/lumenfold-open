@@ -131,7 +131,7 @@ class BatchExtension(unittest.TestCase):
         finally:
             S.cluster_charts_pec, S._merge_small_charts, M.chart_boundary_loops = orig
 
-    def test_production_order_keeps_upstream_reachable(self):
+    def test_install_order_keeps_upstream_reachable(self):
         """install_pec then batch_fast.install, as __init__ runs them; a forced fast failure falls back to upstream's real
         clustering (upstream merge included) on a real mesh."""
         up_cluster, up_merge, up_loops = S.cluster_charts_pec, S._merge_small_charts, M.chart_boundary_loops

@@ -62,7 +62,7 @@ change to any of these can break it.
   ("OOM after the trip") at 11.62 GiB; the host available low point was 11.66 GB.
 - The same bench on an otherwise empty card: the process reached 15.88 GiB with 0.38 GB shared, so nothing spilled,
   nothing tripped, and the cap's OOM ended the fill.
-- Poll interval: in a production run a 1 s poll let 2.86 GB spill before the trip. The node now polls every 0.25 s.
+- Poll interval: in a real run a 1 s poll let 2.86 GB spill before the trip. The node now polls every 0.25 s.
 - CPU tests, 18 Nov 2026: `test_spill_guard.py`, 49 tests, OK on Windows 11 with Python 3.14.3. They include the measured 7 Nov trace (it
   trips once, at the first reading over 1 GB), and the PDH reader against `typeperf` on the live machine.
 

@@ -3,20 +3,20 @@
 //   #include "lumen_bench.h"
 //   int main(int argc, char** argv) {
 //       lumen::bench::Runner r(argc, argv);
-//       r.run("hello.run.n1000", /*items per op*/ 1000 * 60, /*seed*/ 42, [] { return lumen::hello::run(1000, 60, 42); });
+//       r.run("example.n1000", /*items per op*/ 1000 * 60, /*seed*/ 42, [] { return my_op(1000, 60, 42); });
 //       return r.result();
 //   }
 //
-// An op must be pure: the same inputs every call, returning a checksum of its output (an event-log hash). The harness
-// checks that every call returns the same checksum (a determinism check) and stores it, so the gate can fail a changed
-// output. It warms up, sizes a sample to at least --min-sample-ms, takes --samples samples, and prints one JSON line
+// An op must be pure: the same inputs every call, returning a checksum of its output. The harness
+// checks that every call returns the same checksum (a determinism check) and prints it, so a later run can be compared
+// against it. It warms up, sizes a sample to at least --min-sample-ms, takes --samples samples, and prints one JSON line
 // per benchmark with the median and the MAD (median absolute deviation) of the per-op time.
 //
-// Extra detectors (read by our wider build tooling; this folder uses only run()):
-// - S2 complexity slope: r.scaling(name, "n", {1000, 4000, 16000}, items_per_n, seed, [](uint64_t n) {...}) runs the op at
-//   each size (rows "<name>.n<size>"); the build tooling fits the log-log slope of time against n over the sizes, after dividing out
-//   the declared complexity ("1", "n", "nlogn", "n2"), and fails when it is more than 0.25 steeper than declared.
-// - S5 allocations: this header replaces global operator new and delete with counting versions, so every row carries
+// Further probes (not used in this folder, which calls only run(); a separate tool reads their rows):
+// - Complexity slope: r.scaling(name, "n", {1000, 4000, 16000}, items_per_n, seed, [](uint64_t n) {...}) runs the op at
+//   each size (rows "<name>.n<size>"); a reader of the rows can fit the log-log slope of time against n over the sizes, after dividing out
+//   the declared complexity ("1", "n", "nlogn", "n2"), and flag it when it is steeper than declared.
+// - Allocations: this header replaces global operator new and delete with counting versions, so every row carries
 //   allocs_per_op, and r.steady(name, steps, setup, step) fails when a steady-state step allocates after its first call.
 //   Include this header from exactly one .cpp per executable (the bench's), or define LUMEN_BENCH_NO_ALLOC_COUNT.
 #pragma once
@@ -47,7 +47,7 @@
 
 namespace lumen::bench {
 
-inline std::atomic<uint64_t> g_allocs{0};  // global operator new calls since start (S5)
+inline std::atomic<uint64_t> g_allocs{0};  // global operator new calls since start
 inline uint64_t allocs() { return g_allocs.load(std::memory_order_relaxed); }
 
 }  // namespace lumen::bench
@@ -161,7 +161,7 @@ inline CoreMasks core_masks() {
 
 inline int popcount64(uint64_t m) { int n = 0; for (; m; m &= m - 1) ++n; return n; }
 
-inline uint64_t tsc() {  // the invariant time-stamp counter: a fixed rate on this machine, not the boosting core clock
+inline uint64_t tsc() {  // the invariant time-stamp counter: a fixed rate on current x86 CPUs, not the boosting core clock
 #if defined(_MSC_VER) || defined(__x86_64__)
     return __rdtsc();
 #else
@@ -192,7 +192,7 @@ public:
     template <class Op>
     void run(const char* name, double items_per_op, uint64_t seed, Op op) { run_impl(name, items_per_op, seed, op, ""); }
 
-    // S2: the op at each size; complexity is "1", "n", "nlogn" or "n2". The build tooling fits the slope over the sizes.
+    // The op at each size; complexity is "1", "n", "nlogn" or "n2", for fitting the slope over the sizes.
     template <class Op>
     void scaling(const char* name, const char* complexity, std::initializer_list<uint64_t> sizes, double items_per_n,
                  uint64_t seed, Op op) {
@@ -208,16 +208,16 @@ public:
         }
     }
 
-    // S5: a steady-state step must not allocate. setup() builds the state (untimed, may allocate); step(state) runs
+    // A steady-state step must not allocate. setup() builds the state (untimed, may allocate); step(state) runs
     // `steps` times; any allocation after the first call is a finding (the first may grow buffers once).
     // The count is process-wide calls to global operator new over the probe: a background thread's allocations count, and a
     // step that allocates through malloc or its own pool is not seen.
     template <class Setup, class Step>
     void steady(const char* name, int steps, Setup setup, Step step) {
         if (!filter.empty() && std::string(name).find(filter) == std::string::npos) return;
-        if (steps < 2) { std::fprintf(stderr, "%s: a steady-state probe needs 2 steps or more (S5)\n", name); failed_ = true; return; }
+        if (steps < 2) { std::fprintf(stderr, "%s: a steady-state probe needs 2 steps or more\n", name); failed_ = true; return; }
         if (!counting()) {  // never report a clean probe that could not have seen an allocation
-            std::fprintf(stderr, "%s: allocation counting is off in this build (LUMEN_BENCH_NO_ALLOC_COUNT?), so S5 cannot pass\n", name);
+            std::fprintf(stderr, "%s: allocation counting is off in this build (LUMEN_BENCH_NO_ALLOC_COUNT?), so the allocation probe cannot pass\n", name);
             failed_ = true; return;
         }
         auto state = setup();
@@ -229,20 +229,20 @@ public:
         std::printf("{\"steady\":\"%s\",\"steps\":%d,\"first_step_allocs\":%llu,\"steady_allocs\":%llu,\"ok\":%s}\n", name, steps,
                     (unsigned long long)(a1 - a0), (unsigned long long)later, later ? "false" : "true");
         std::fflush(stdout);
-        if (later) { std::fprintf(stderr, "%s: %llu allocations in %d steady-state steps (S5)\n", name, (unsigned long long)later, steps - 1); failed_ = true; }
+        if (later) { std::fprintf(stderr, "%s: %llu allocations in %d steady-state steps\n", name, (unsigned long long)later, steps - 1); failed_ = true; }
     }
 
-    // S4: bytes the next runs touch per item (reads plus writes), declared by the bench. The build tooling sets it against this
+    // Bytes the next runs touch per item (reads plus writes), declared by the bench, for setting against the
     // machine's measured bandwidth (a stream benchmark) to class each run as memory- or compute-bound. 0 means undeclared.
     double bytes_per_item = 0;
-    // S4: the bytes the op keeps live (its arrays), so the build tooling picks the roof of the cache level that holds them (P-core
+    // The bytes the op keeps live (its arrays), for picking the roof of the cache level that holds them (P-core
     // L1, L2, L3 or DRAM). For r.scaling(), working_set_per_n * n is used at each size when it is set. 0 means undeclared.
     double working_set_bytes = 0;
     double working_set_per_n = 0;
 
-    // S3: op(workers) at each worker count with the process on one logical processor per P-core (SMT siblings left out),
-    // then all P- and E-cores with one worker per core. Rows "<name>.w<k>" carry workers and cores ("P" or "P+E"); the build tooling
-    // reports the parallel efficiency against one worker and fails when the checksum depends on the worker count.
+    // op(workers) at each worker count with the process on one logical processor per P-core (SMT siblings left out),
+    // then all P- and E-cores with one worker per core. Rows "<name>.w<k>" carry workers and cores ("P" or "P+E"), for the parallel
+    // efficiency against one worker; it fails when the checksum depends on the worker count.
     template <class Op>
     void threads(const char* name, std::initializer_list<int> workers, double items_per_op, uint64_t seed, Op op) {
         const CoreMasks cm = core_masks();
@@ -307,7 +307,7 @@ private:
             ns.push_back(ms_since(t) * 1e6 / double(iters));
         }
         const double ops = double(iters) * samples;
-        const double tsc_per_item = items_per_op > 0 ? double(tsc() - tsc0) / (ops * items_per_op) : 0;  // S4: TSC ticks, not core cycles
+        const double tsc_per_item = items_per_op > 0 ? double(tsc() - tsc0) / (ops * items_per_op) : 0;  // TSC ticks, not core cycles
         const double allocs_per_op = double(allocs() - a0) / ops;  // the list below allocates after this
         double med = median(ns), dev = mad(ns, med);
         auto [lo, hi] = std::minmax_element(ns.begin(), ns.end());

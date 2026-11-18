@@ -17,7 +17,7 @@ Poly Haven assets are CC0: https://polyhaven.com/license
 - selects assets by category or collection, one API call per category (a comma list in the API means "in all of
   them", so the script never sends one);
 - for each asset, picks the files at `--res` (falling back to the largest lower resolution): models as FBX with their
-  textures, textures as every map in jpg (png where there is no jpg), HDRIs as `.hdr`;
+  textures, textures as every map in jpg (else png, else exr), HDRIs as `.hdr` (`.exr` where there is no `.hdr`);
 - downloads with four threads to a `.part` file and keeps it only when its md5 matches the API's;
 - skips a file already on disk with the right md5, so a rerun resumes;
 - appends one line per asset to `<out>/manifest.jsonl`: id, type, categories, file count, bytes.
@@ -38,7 +38,7 @@ count was recorded.
 Prerequisites: Python 3.8 or later. No packages. The offline test needs nothing else:
 
 ```
-python3 -m unittest test_polyhaven -v
+python -m unittest test_polyhaven -v
 ```
 
 Expected: `Ran 7 tests` and `OK`. It checks the md5 download, resume and mismatch handling through `file://` URLs, and
@@ -47,7 +47,7 @@ the per-kind file choice with a fixed API answer. It needs no network.
 Count first with `--dry` (it calls the API but downloads nothing), then download:
 
 ```
-python3 polyhaven.py --out ./polyhaven --res 4k \
+python polyhaven.py --out ./polyhaven --res 4k \
     --models nature,tools,containers,furniture \
     --collections pine_forest,verdant_trail,the_shed,smugglers_cove,hidden_alley \
     --hdris night,overcast --textures brick,cobblestone,bark,roofing,plaster-concrete,rock --dry

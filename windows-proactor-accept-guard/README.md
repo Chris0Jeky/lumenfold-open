@@ -29,7 +29,7 @@ rest of the function is unchanged.
 
 `proactor_events-3.12.10.diff` is the change as a unified diff against CPython v3.12.10
 `Lib/asyncio/proactor_events.py`. The function in `lf_accept_guard/__init__.py` is that file's `_start_serving` with the
-diff applied, character for character.
+diff applied, character for character apart from four spaces of indentation (it is nested inside `install()`).
 
 The node installs only on Windows with CPython 3.12, the version the copy was taken from.
 

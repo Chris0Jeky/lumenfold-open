@@ -36,7 +36,7 @@ inline int run_all() {
 #define CHECK(cond)                                                                                        \
     do { if (!(cond)) { ++lumen::test::failures(); std::printf("  %s:%d: CHECK(%s)\n", __FILE__, __LINE__, #cond); } } while (0)
 // A replay hash pinned per compiler. Float results can differ between compiler versions (the CRT's sqrt, sin and the like
-// changed between VS 2019 and 2022; spatial's hash differs, hello's doesn't), so a pin names the compiler it was recorded
+// changed between VS 2019 and 2022), so a pin names the compiler it was recorded
 // with: CHECK_PINNED(run(...), {{1944, 0x2cec783cc308afd7ull}, {1929, 0x...ull}}). The key is _MSC_VER plus the
 // toolset's minor (19.44 -> 1944, 19.29 -> 1929); __clang__ builds use 0. With no pin for this compiler the check prints
 // SKIP and passes: record one by running the test there.
