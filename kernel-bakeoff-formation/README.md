@@ -135,15 +135,17 @@ clang, outside the MSVC path.
 
 - CPU: Intel Core i5-13600K (6 P-cores and 8 E-cores); the benchmark thread pinned to one P-core at high priority.
 - OS: Windows 11.
-- Compiler: MSVC, x64, `/O2 /fp:precise /std:c++20` (full flags in `kbuild.py`). The MSVC version was not recorded;
-  `kbuild.py` now prints it.
+- Compiler: MSVC, x64, `/O2 /fp:precise /std:c++20` (full flags in `kbuild.py`). The MSVC version of the
+  benchmark run was not recorded; the packaged folder was built with MSVC tools 14.44.35207 (below).
 - Python 3; the exact version was not recorded.
 
 ## Not verified
 
-- The files in this folder were not compiled after packaging: no C++ compiler was on PATH. The changes since the
-  measured build are comment edits, the trimmed test and benchmark, the added g++ include and the rewritten build
-  scripts. Run `py -3 kbuild.py original` first.
+- Built from this folder on 18 Nov 2026 with MSVC tools 14.44.35207: `kbuild.py` on `original` and on each of
+  `solutions/V`, `N`, `L` and `A` passed both unit tests, `exact_formation` (438 cases, 0 mismatches) and `exact_wide`
+  (1518 cases, 0 mismatches). The benchmark was not re-run on the packaged folder; the table comes from the measured
+  run. The changes since that run are comment and message edits, the trimmed test and benchmark, the added g++
+  include and the rewritten build scripts. g++ and clang builds are untested.
 - The original test file had a third test (a swarm pours into the dragon), and the benchmark file two swarm-step
   benchmarks that ran after the two measured ones. All three need our swarm core and are not included. The two
   measured benchmarks are unchanged and ran first in the same process.
