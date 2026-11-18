@@ -127,7 +127,7 @@ written and checked against MSVC only. Outside Windows the benchmark thread is n
 - `kbuild.py`, `bench_all.py`: build and benchmark scripts.
 - `results/bench_run2.json`: the measured run behind the table, with two host-status lines removed.
 
-We edited comments and two harness error messages only in the C++ sources (lab references), and trimmed the test and benchmark files (below). We made
+We edited comments and three harness error messages only in the C++ sources (lab references), and trimmed the test and benchmark files (below). We made
 no code change to any `formation.cpp`. In `include/lumen_bench.h` we added one `#include <x86intrin.h>` for g++ and
 clang, outside the MSVC path.
 
