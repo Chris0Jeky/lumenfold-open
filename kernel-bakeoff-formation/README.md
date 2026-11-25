@@ -105,15 +105,21 @@ Bench one build: `py -3 kbuild.py solutions/V --bench --runs 5`. Bench all five 
 Try your own solution: copy `original/formation.cpp` into a new folder, change it, and run `py -3 kbuild.py <folder>`.
 A `formation.h` in that folder is used instead of the original's.
 
-g++ or clang (untested; we have not built it this way):
+Linux x86-64 with g++: run the unit and bit-exactness checks for the original and all four solutions:
 
-```
-python3 kbuild.py original --cxx g++
-python3 bench_all.py 9 --cxx clang++
+```sh
+for build in original solutions/V solutions/N solutions/L solutions/A; do
+  python3 kbuild.py "$build" --cxx g++ || exit 1
+done
 ```
 
-This compiles with `-std=c++20 -O2 -DNDEBUG`. ISO mode keeps FMA contraction and fast-math off, but the solutions were
-written and checked against MSVC only. Outside Windows the benchmark thread is not pinned.
+Verified on Debian 13 x86-64 with g++ 14.2.0 and Python 3.12.14: each of the five builds passed 2 unit tests,
+438 fixed exactness cases and 1,518 wide cases, with zero mismatches against the same-toolchain reference.
+This establishes exactness on those inputs, not on all inputs or between toolchains. The Windows/MSVC timings
+above are unchanged; no comparable Linux timings are reported.
+
+The build script uses `-std=c++20 -O2 -DNDEBUG -Wall` for g++ and clang++. Outside Windows the benchmark thread
+is not pinned. The script accepts `--cxx clang++`, but Clang was not verified.
 
 ## Files
 
@@ -145,11 +151,11 @@ clang, outside the MSVC path.
   `solutions/V`, `N`, `L` and `A` passed both unit tests, `exact_formation` (438 cases, 0 mismatches) and `exact_wide`
   (1518 cases, 0 mismatches). The benchmark was not re-run on the packaged folder; the table comes from the measured
   run. The changes since that run are comment and message edits, the trimmed test and benchmark, the added g++
-  include and the rewritten build scripts. g++ and clang builds are untested.
+  include and the rewritten build scripts.
 - The original test file had a third test (a swarm pours into the dragon), and the benchmark file two swarm-step
   benchmarks that ran after the two measured ones. All three need our swarm core and are not included. The two
   measured benchmarks are unchanged and ran first in the same process.
 - One run per model. A second run of the same model could change close results (L's slots path is faster than N's).
 - A GPU render ran on the same machine during the measured run. All builds were interleaved, so it affected them alike,
   but it was not a quiet machine.
-- No g++, clang, sanitizer or 32-bit build. NaN inputs are not checked.
+- No Clang, sanitizer or 32-bit build was verified. NaN inputs are not checked.
