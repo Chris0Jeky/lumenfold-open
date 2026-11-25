@@ -9,7 +9,7 @@ it also runs bench_formation --runs times and prints the median of each benchmar
 Exit 0 only when every step passes.
 
 The comparison was measured with MSVC (--cxx cl, the default on Windows): /O2 /fp:precise, C++20, x64, no /arch flag.
---cxx g++ or clang++ is untested."""
+See README.md for tested toolchains and portability limits."""
 import argparse, json, os, shutil, statistics, subprocess, sys
 from pathlib import Path
 
