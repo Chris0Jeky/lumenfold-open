@@ -20,7 +20,8 @@ Poly Haven assets are CC0: https://polyhaven.com/license
   textures, textures as every map in jpg (else png, else exr), HDRIs as `.hdr` (`.exr` where there is no `.hdr`);
 - downloads with four threads to a `.part` file and keeps it only when its md5 matches the API's;
 - skips a file already on disk with the right md5, so a rerun resumes;
-- appends one line per asset to `<out>/manifest.jsonl`: id, type, categories, file count, bytes.
+- appends one line per asset with compatible files to `<out>/manifest.jsonl`: id, type, categories, planned file
+  count and bytes. This is the download plan, not proof that the files arrived.
 
 It sends the User-Agent `polyhaven-bulk-download/1.0 (+https://github.com/Chris0Jeky/lumenfold-open)`. Poly Haven asks
 API users to identify their project in the User-Agent; see its API terms at https://polyhaven.com/our-api and the API
@@ -41,8 +42,8 @@ Prerequisites: Python 3.8 or later. No packages. The offline test needs nothing 
 python -m unittest test_polyhaven -v
 ```
 
-Expected: `Ran 7 tests` and `OK`. It checks the md5 download, resume and mismatch handling through `file://` URLs, and
-the per-kind file choice with a fixed API answer. It needs no network.
+Expected: `Ran 10 tests` and `OK`. These cover local checksum, resume and mismatch handling; file selection with
+mocked API replies; and empty, skipped and mixed CLI batches. They need no network.
 
 Count first with `--dry` (it calls the API but downloads nothing), then download:
 
@@ -53,7 +54,10 @@ python polyhaven.py --out ./polyhaven --res 4k \
     --hdris night,overcast --textures brick,cobblestone,bark,roofing,plaster-concrete,rock --dry
 ```
 
-The dry run prints `assets <n> {...}` and `files <n> GB <size>`. A download ends with `done files <n> bad <k>` and
+The dry run prints `assets <n> {...}` and `files <n> GB <size>`. Both modes list selected assets skipped because
+they offer no compatible files at the requested resolution or below. If nothing matched or every asset was
+skipped, both modes exit 1 before creating any output. In a mixed batch, skipped assets do not stop the
+compatible downloads and do not appear in the manifest. A download ends with `done files <n> bad <k>` and
 exits 1 if any file failed its md5 (rerun to retry those). Files land in `<out>/<models|hdris|textures>/<asset id>/`.
 
 ## Measured on

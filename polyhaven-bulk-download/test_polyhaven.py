@@ -1,7 +1,8 @@
 """Offline check of polyhaven.py: md5-checked download, resume and mismatch handling (through file:// URLs), and the
 file list per asset kind with the resolution fallback (with the API call replaced by a fixed answer).
     python -m unittest test_polyhaven -v"""
-import hashlib, os, tempfile, unittest
+import contextlib, hashlib, io, json, os, tempfile, unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import polyhaven
@@ -70,6 +71,67 @@ class FilesFor(unittest.TestCase):
 
     def test_no_higher_res_fallback(self):
         self.assertEqual([x[1] for x in polyhaven.files_for("t", "textures", "1k")], ["t_rough_1k.png"])
+
+
+class Main(unittest.TestCase):
+    def run_cli(self, catalog, dry):
+        def respond(path):
+            return catalog if path.startswith("/assets?") else FILES[path.rsplit("/", 1)[1]]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "out"
+            argv = ["polyhaven.py", "--out", str(out), "--res", "1k", "--models", "nature"]
+            if dry:
+                argv.append("--dry")
+            stream = io.StringIO()
+            with contextlib.ExitStack() as stack:
+                stack.enter_context(patch("sys.argv", argv))
+                stack.enter_context(patch.object(polyhaven, "js", side_effect=respond))
+                fetch = stack.enter_context(patch.object(polyhaven, "fetch", return_value="ok"))
+                stack.enter_context(contextlib.redirect_stdout(stream))
+                try:
+                    polyhaven.main()
+                except SystemExit as exc:
+                    status = exc.code
+                else:
+                    status = 0
+            manifest = out / "manifest.jsonl"
+            plan = [json.loads(row) for row in manifest.read_text().splitlines()] if manifest.exists() else []
+            return status, stream.getvalue(), fetch.call_count, plan, out.exists()
+
+    def test_all_skipped_reports_asset_and_fails_in_both_modes(self):
+        for dry in (True, False):
+            with self.subTest(dry=dry):
+                status, output, downloads, plan, out_exists = self.run_cli({"m": {}}, dry)
+                self.assertEqual(status, 1)
+                self.assertIn("skipped models/m", output)
+                self.assertIn("skipped assets 1", output)
+                self.assertEqual(downloads, 0)
+                self.assertEqual(plan, [])
+                self.assertFalse(out_exists)
+
+    def test_mixed_batch_downloads_only_supported_assets(self):
+        ready = {"fbx": {"1k": {"fbx": entry("ready_1k.fbx")}}}
+        with patch.dict(FILES, {"ready": ready}):
+            for dry in (True, False):
+                with self.subTest(dry=dry):
+                    status, output, downloads, plan, out_exists = self.run_cli({"m": {}, "ready": {}}, dry)
+                    self.assertEqual(status, 0)
+                    self.assertIn("skipped models/m", output)
+                    self.assertIn("skipped assets 1", output)
+                    self.assertEqual(downloads, 0 if dry else 1)
+                    self.assertEqual([row["id"] for row in plan], [] if dry else ["ready"])
+                    self.assertEqual(out_exists, not dry)
+
+    def test_empty_selection_fails_without_creating_output(self):
+        for dry in (True, False):
+            with self.subTest(dry=dry):
+                status, output, downloads, plan, out_exists = self.run_cli({}, dry)
+                self.assertEqual(status, 1)
+                self.assertIn("no assets matched", output)
+                self.assertEqual(downloads, 0)
+                self.assertEqual(plan, [])
+                self.assertFalse(out_exists)
 
 
 if __name__ == "__main__":
