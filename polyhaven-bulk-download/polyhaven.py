@@ -3,7 +3,7 @@
       --models nature,tools,containers,furniture --collections pine_forest,verdant_trail,the_shed,smugglers_cove,hidden_alley \
       --hdris night,overcast --textures brick,cobblestone,bark,roofing,plaster-concrete,rock [--dry]
 Models: the FBX at --res with its textures. Textures: every map at --res as jpg (png where there is no jpg). HDRIs: .hdr.
-Writes <out>/manifest.jsonl (one line per asset: id, type, categories, files, bytes). Skips a file already on disk with
+Appends planned assets to <out>/manifest.jsonl (id, type, categories, files, bytes; not a completion record). Skips a file already on disk with
 the right md5, so a rerun resumes. Assets: CC0 (polyhaven.com/license). API terms: polyhaven.com/our-api."""
 import argparse, concurrent.futures as cf, hashlib, json, os, sys, urllib.parse, urllib.request
 
@@ -83,13 +83,22 @@ def main():
             want.setdefault(aid, (kind, info.get("categories", [])))
     print("assets", len(want), {k: sum(1 for v in want.values() if v[0] == k) for k in ("models", "hdris", "textures")},
           flush=True)
-    jobs, man = [], []
+    jobs, man, skipped = [], [], 0
     for aid, (kind, cats) in sorted(want.items()):
         fs = files_for(aid, kind, a.res)
+        if not fs:
+            print(f"skipped {kind}/{aid}: no compatible files at {a.res} or lower", flush=True)
+            skipped += 1
+            continue
         man.append({"id": aid, "type": kind, "categories": cats, "files": len(fs), "bytes": sum(x[3] for x in fs)})
         jobs += [(u, os.path.join(a.out, kind, aid, rel), m) for u, rel, m, _ in fs]
     total = sum(x["bytes"] for x in man)
     print("files", len(jobs), "GB", round(total / 1e9, 2), flush=True)
+    if skipped:
+        print("skipped assets", skipped, flush=True)
+    if not jobs:
+        print("no compatible files to download" if want else "no assets matched the selection", flush=True)
+        sys.exit(1)
     if a.dry:
         return
     os.makedirs(a.out, exist_ok=True)
